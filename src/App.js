@@ -1,11 +1,10 @@
-import axios from 'axios';
 import './App.css';
-import OpenAIChat from './Components/OpenAI/OpenAI';
+import HomePage from './Components/HomePage/Homepage';
 
 function App() { 
   return (
     <div>
-      <OpenAIChat />
+      <HomePage />
     </div>
   );
 }

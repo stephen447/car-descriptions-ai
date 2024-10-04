@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 
 import OpenAI from "openai";
 const openai = new OpenAI({
@@ -7,7 +6,7 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-const OpenAIChat = () => {
+const OpenAIClient = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -58,4 +57,4 @@ const OpenAIChat = () => {
   );
 };
 
-export default OpenAIChat;
+export default OpenAIClient;
