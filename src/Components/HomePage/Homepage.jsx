@@ -25,6 +25,53 @@ const HomePage = () => {
   const [manufacturer, setManufacturer] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState(2023);
+  const [mileage, setMileage] = useState(0);
+  const [condition, setCondition] = useState();
+  const [transmission, setTransmission] = useState();
+  const [fuelType, setFuelType] = useState();
+  const [engineSize, setEngineSize] = useState();
+  const [bodyStyle, setBodyStyle] = useState();
+  const [color, setColor] = useState();
+  const [interiorColor, setInteriorColor] = useState();
+  const [ServiceHistory, setServiceHistory] = useState();
+  const [Tax, setTax] = useState();
+  const [NCT, setNCT] = useState();
+
+  const fuelOptions = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  const transmissionOptions = ["Automatic", "Manual"];
+  const conditionOptions = ["New", "Very Good", "Good", "Fair", "Poor"];
+  const bodyStyleOptions = [
+    "Saloon",
+    "SUV",
+    "Van",
+    "Coupe",
+    "Convertible",
+    "Hatchback",
+  ];
+  const colorOptions = [
+    "White",
+    "Black",
+    "Silver",
+    "Red",
+    "Blue",
+    "Green",
+    "Grey",
+    "Gold",
+    "Orange",
+    "Yellow",
+  ];
+
+  const interiorColorOptions = [
+    "Black",
+    "Grey",
+    "Beige",
+    "Brown",
+    "White",
+    "Blue",
+    "Orange",
+    "Red",
+  ];
+
   const [features, setFeatures] = useState({
     sunroof: false,
     leatherSeats: false,
@@ -55,10 +102,22 @@ const HomePage = () => {
   }, [manufacturer, year]);
 
   useEffect(() => {
-    const prompt = `I am selling a ${year} ${manufacturer} ${model}, can you make me a description?`;
+    const prompt = `I am selling a ${year} ${manufacturer} ${model}, the exterior color is ${color} and the interior color is ${interiorColor} the mileage is ${mileage} kimometers, the condition is ${condition}, it has an ${transmission} transmissions and a ${fuelType} ${engineSize} liter engine,  can you make me a description for car selling website carzone?`;
     setPrompt(prompt);
     console.log("Prompt: ", prompt);
-  }, [manufacturer, model, year]);
+  }, [
+    manufacturer,
+    model,
+    year,
+    mileage,
+    condition,
+    transmission,
+    fuelType,
+    color,
+    interiorColor,
+    engineSize,
+  ]);
+
   return (
     <div>
       <h1>Home Page</h1>
@@ -73,10 +132,36 @@ const HomePage = () => {
         onSelectedChange={setModel}
       />
       <Dropdown
-        options={["Corolla", "Camry", "RAV4"]}
-        label={"Model"}
-        onSelectedChange={setModel}
+        options={conditionOptions}
+        label={"Condition"}
+        onSelectedChange={setCondition}
       />
+      <Dropdown
+        options={transmissionOptions}
+        label={"Transmission"}
+        onSelectedChange={setTransmission}
+      />
+      <Dropdown
+        options={fuelOptions}
+        label={"Fuel Type"}
+        onSelectedChange={setFuelType}
+      />
+      <Dropdown
+        options={bodyStyleOptions}
+        label={"Body Style"}
+        onSelectedChange={setBodyStyle}
+      />
+      <Dropdown
+        options={colorOptions}
+        label={"Color"}
+        onSelectedChange={setColor}
+      />
+      <Dropdown
+        options={interiorColorOptions}
+        label={"Interior Color"}
+        onSelectedChange={setInteriorColor}
+      />
+
       <Input
         label={"Year"}
         type={"number"}
@@ -84,6 +169,22 @@ const HomePage = () => {
         max={2025}
         value={year}
         onChange={setYear}
+      />
+      <Input
+        label={"Mileage"}
+        type={"number"}
+        min={0}
+        max={999999}
+        value={mileage}
+        onChange={setMileage}
+      />
+      <Input
+        label={"Engine Size"}
+        type={"number"}
+        min={0}
+        max={10}
+        value={engineSize}
+        onChange={setEngineSize}
       />
 
       <OpenAIClient />
