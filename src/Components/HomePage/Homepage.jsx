@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Toggle from "../Toggle/Toggle";
 import Input from "../Input/Input";
+import Output from "../Output/Output";
 
 // Manufacturers
 // Models - - will need to do some kind of api call to get the models for the selected manufacturer
@@ -131,9 +132,9 @@ const HomePage = () => {
   ]);
 
   return (
-    <div>
+    <div className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
       <h1 className="text-4xl text-center m-5">Car Descriptions Generator</h1>
-      <div className="grid gap-2 sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-xs sm:text-sm md:text-base lg:text-lg">
+      <div className="grid gap-2 sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
         <Dropdown
           options={["Toyota", "BMW", "Audi"]}
           label={"Manufacturer"}
@@ -224,6 +225,7 @@ const HomePage = () => {
           }
         />
       </div>
+      <Output text={prompt} />
     </div>
   );
 };

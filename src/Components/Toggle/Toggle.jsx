@@ -8,11 +8,20 @@ const Toggle = ({ label, onToggle }) => {
     onToggle(!isToggled); // Call the parent function to pass the toggle state
   };
 
+  const handleKeyDown = (e) => {
+    // Check if the pressed key is Space or Enter
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault(); // Prevent scrolling when space is pressed
+      handleToggle();
+    }
+  };
+
   return (
     <div className="flex m-auto">
       <label style={{ marginRight: "10px" }}>{label}</label>
       <div
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
         style={{
           width: "50px",
           height: "25px",
@@ -21,6 +30,7 @@ const Toggle = ({ label, onToggle }) => {
           position: "relative",
           cursor: "pointer",
         }}
+        tabIndex={0}
       >
         <div
           style={{
