@@ -132,96 +132,98 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="text-4xl">Home Page</h1>
-      <Dropdown
-        options={["Toyota", "BMW", "Audi"]}
-        label={"Manufacturer"}
-        onSelectedChange={setManufacturer}
-      />
-      <Dropdown
-        options={["Corolla", "Camry", "RAV4"]}
-        label={"Model"}
-        onSelectedChange={setModel}
-      />
-      <Dropdown
-        options={conditionOptions}
-        label={"Condition"}
-        onSelectedChange={setCondition}
-      />
-      <Dropdown
-        options={transmissionOptions}
-        label={"Transmission"}
-        onSelectedChange={setTransmission}
-      />
-      <Dropdown
-        options={fuelOptions}
-        label={"Fuel Type"}
-        onSelectedChange={setFuelType}
-      />
-      <Dropdown
-        options={bodyStyleOptions}
-        label={"Body Style"}
-        onSelectedChange={setBodyStyle}
-      />
-      <Dropdown
-        options={colorOptions}
-        label={"Color"}
-        onSelectedChange={setColor}
-      />
-      <Dropdown
-        options={interiorColorOptions}
-        label={"Interior Color"}
-        onSelectedChange={setInteriorColor}
-      />
+      <h1 className="text-4xl text-center m-5">Car Descriptions Generator</h1>
+      <div className="grid gap-2 sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-xs sm:text-sm md:text-base lg:text-lg">
+        <Dropdown
+          options={["Toyota", "BMW", "Audi"]}
+          label={"Manufacturer"}
+          onSelectedChange={setManufacturer}
+        />
+        <Dropdown
+          options={["Corolla", "Camry", "RAV4"]}
+          label={"Model"}
+          onSelectedChange={setModel}
+        />
+        <Dropdown
+          options={conditionOptions}
+          label={"Condition"}
+          onSelectedChange={setCondition}
+        />
+        <Dropdown
+          options={transmissionOptions}
+          label={"Transmission"}
+          onSelectedChange={setTransmission}
+        />
+        <Dropdown
+          options={fuelOptions}
+          label={"Fuel Type"}
+          onSelectedChange={setFuelType}
+        />
+        <Dropdown
+          options={bodyStyleOptions}
+          label={"Body Style"}
+          onSelectedChange={setBodyStyle}
+        />
+        <Dropdown
+          options={colorOptions}
+          label={"Color"}
+          onSelectedChange={setColor}
+        />
+        <Dropdown
+          options={interiorColorOptions}
+          label={"Interior Color"}
+          onSelectedChange={setInteriorColor}
+        />
 
-      <Input
-        label={"Year"}
-        type={"number"}
-        min={1960}
-        max={2025}
-        value={year}
-        onChange={setYear}
-      />
-      <Input
-        label={"Mileage"}
-        type={"number"}
-        min={0}
-        max={999999}
-        value={mileage}
-        onChange={setMileage}
-      />
-      <Input
-        label={"Engine Size"}
-        type={"number"}
-        min={0}
-        max={10}
-        value={engineSize}
-        onChange={setEngineSize}
-      />
-      <Toggle
-        label={"Sunroof"}
-        onToggle={(value) => setFeatures({ ...features, sunroof: value })}
-      />
-      <Toggle
-        label={"Leather Seats"}
-        onToggle={(value) => setFeatures({ ...features, leatherSeats: value })}
-      />
-      <Toggle
-        label={"Bluetooth"}
-        onToggle={(value) => setFeatures({ ...features, bluetooth: value })}
-      />
-      <Toggle
-        label={"Heated Seats"}
-        onToggle={(value) => setFeatures({ ...features, heatedSeats: value })}
-      />
-      <Toggle
-        label={"Parking Sensors"}
-        onToggle={(value) =>
-          setFeatures({ ...features, parkingSensors: value })
-        }
-      />
-
-      <OpenAIClient />
+        <Input
+          label={"Year"}
+          type={"number"}
+          min={1960}
+          max={2025}
+          value={year}
+          onChange={setYear}
+        />
+        <Input
+          label={"Mileage"}
+          type={"number"}
+          min={0}
+          max={999999}
+          value={mileage}
+          onChange={setMileage}
+        />
+        <Input
+          label={"Engine Size"}
+          type={"number"}
+          min={0}
+          max={10}
+          value={engineSize}
+          onChange={setEngineSize}
+        />
+        <Toggle
+          label={"Sunroof"}
+          onToggle={(value) => setFeatures({ ...features, sunroof: value })}
+        />
+        <Toggle
+          label={"Leather Seats"}
+          onToggle={(value) =>
+            setFeatures({ ...features, leatherSeats: value })
+          }
+        />
+        <Toggle
+          label={"Bluetooth"}
+          onToggle={(value) => setFeatures({ ...features, bluetooth: value })}
+        />
+        <Toggle
+          label={"Heated Seats"}
+          onToggle={(value) => setFeatures({ ...features, heatedSeats: value })}
+        />
+        <Toggle
+          label={"Parking Sensors"}
+          onToggle={(value) =>
+            setFeatures({ ...features, parkingSensors: value })
+          }
+        />
+      </div>
     </div>
   );
 };

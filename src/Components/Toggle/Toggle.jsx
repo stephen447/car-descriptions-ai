@@ -9,7 +9,7 @@ const Toggle = ({ label, onToggle }) => {
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div className="flex m-auto">
       <label style={{ marginRight: "10px" }}>{label}</label>
       <div
         onClick={handleToggle}
