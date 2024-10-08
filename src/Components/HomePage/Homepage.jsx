@@ -1,7 +1,10 @@
 import Dropdown from "../Dropdown/DropDown";
 import OpenAIClient from "../OpenAI/OpenAIClient";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Toggle from "../Toggle/Toggle";
+import Input from "../Input/Input";
 
 // Manufacturers
 // Models - - will need to do some kind of api call to get the models for the selected manufacturer
@@ -19,18 +22,70 @@ import { useState } from "react";
 
 const HomePage = () => {
   const [prompt, setPrompt] = useState("");
+  const [manufacturer, setManufacturer] = useState("");
+  const [model, setModel] = useState("");
+  const [year, setYear] = useState(2023);
+  const [features, setFeatures] = useState({
+    sunroof: false,
+    leatherSeats: false,
+    bluetooth: false,
+    heatedSeats: false,
+    parkingSensors: false,
+  });
+
+  useEffect(() => {
+    const getModels = async () => {
+      try {
+        if (manufacturer !== undefined) {
+          const response = await axios.get(
+            process.env.REACT_APP_API_BASE_URL +
+              `adverts/models?manufacturer=${manufacturer}`
+          );
+          const newModelOptions = response.data;
+          //setModelOptions(newModelOptions);
+          //setDisableModeloptions(newModelOptions.length === 0);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    console.log("Manufacturer: ", manufacturer);
+    console.log("Year: ", year);
+    //getModels();
+  }, [manufacturer, year]);
+
+  useEffect(() => {
+    const prompt = `I am selling a ${year} ${manufacturer} ${model}, can you make me a description?`;
+    setPrompt(prompt);
+    console.log("Prompt: ", prompt);
+  }, [manufacturer, model, year]);
   return (
     <div>
       <h1>Home Page</h1>
       <Dropdown
-        options={[
-          { label: "Option 1", value: "option1" },
-          { label: "Option 2", value: "option2" },
-          { label: "Option 3", value: "option3" },
-        ]}
+        options={["Toyota", "BMW", "Audi"]}
         label={"Manufacturer"}
-        onSelectedChange={(option) => console.log(option)}
+        onSelectedChange={setManufacturer}
       />
+      <Dropdown
+        options={["Corolla", "Camry", "RAV4"]}
+        label={"Model"}
+        onSelectedChange={setModel}
+      />
+      <Dropdown
+        options={["Corolla", "Camry", "RAV4"]}
+        label={"Model"}
+        onSelectedChange={setModel}
+      />
+      <Input
+        label={"Year"}
+        type={"number"}
+        min={1960}
+        max={2025}
+        value={year}
+        onChange={setYear}
+      />
+
       <OpenAIClient />
     </div>
   );

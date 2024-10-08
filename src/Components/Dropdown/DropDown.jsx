@@ -1,16 +1,18 @@
-const Dropdown = ({ options, selected, onSelectedChange, label }) => {
+import React from "react";
+
+const Dropdown = ({ options, selected, onSelectedChange, label, disabled }) => {
   return (
     <>
       <label>{label}</label>
-      <select>
+      <select
+        value={selected}
+        onChange={(e) => onSelectedChange(e.target.value)} // Use onChange to get the selected value
+      >
+        <option value="">Select a {label}</option>
         {options.map((option) => {
           return (
-            <option
-              key={option.value}
-              value={option.value}
-              onClick={() => onSelectedChange(option)}
-            >
-              {option.label}
+            <option key={option} value={option}>
+              {option}
             </option>
           );
         })}
@@ -18,4 +20,5 @@ const Dropdown = ({ options, selected, onSelectedChange, label }) => {
     </>
   );
 };
+
 export default Dropdown;
