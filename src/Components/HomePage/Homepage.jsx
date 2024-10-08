@@ -102,9 +102,20 @@ const HomePage = () => {
   }, [manufacturer, year]);
 
   useEffect(() => {
-    const prompt = `I am selling a ${year} ${manufacturer} ${model}, the exterior color is ${color} and the interior color is ${interiorColor} the mileage is ${mileage} kimometers, the condition is ${condition}, it has an ${transmission} transmissions and a ${fuelType} ${engineSize} liter engine,  can you make me a description for car selling website carzone?`;
+    // Filter the feature object to only include the features that are true
+    const featuresArray = Object.keys(features).filter(
+      (feature) => features[feature]
+    );
+    console.log("Features Array: ", featuresArray);
+
+    // Create the prompt, joining the features array into a string
+    const prompt = `I am selling a ${year} ${manufacturer} ${model}, the exterior color is ${color} and the interior color is ${interiorColor}. The mileage is ${mileage} kilometers, the condition is ${condition}, it has an ${transmission} transmission and a ${fuelType} ${engineSize} liter engine. Some of the additional features include ${featuresArray.join(
+      ", "
+    )}. Can you make me a description for car selling website Carzone?`;
+
     setPrompt(prompt);
     console.log("Prompt: ", prompt);
+    console.log("Features: ", features);
   }, [
     manufacturer,
     model,
@@ -116,6 +127,7 @@ const HomePage = () => {
     color,
     interiorColor,
     engineSize,
+    features,
   ]);
 
   return (
@@ -185,6 +197,28 @@ const HomePage = () => {
         max={10}
         value={engineSize}
         onChange={setEngineSize}
+      />
+      <Toggle
+        label={"Sunroof"}
+        onToggle={(value) => setFeatures({ ...features, sunroof: value })}
+      />
+      <Toggle
+        label={"Leather Seats"}
+        onToggle={(value) => setFeatures({ ...features, leatherSeats: value })}
+      />
+      <Toggle
+        label={"Bluetooth"}
+        onToggle={(value) => setFeatures({ ...features, bluetooth: value })}
+      />
+      <Toggle
+        label={"Heated Seats"}
+        onToggle={(value) => setFeatures({ ...features, heatedSeats: value })}
+      />
+      <Toggle
+        label={"Parking Sensors"}
+        onToggle={(value) =>
+          setFeatures({ ...features, parkingSensors: value })
+        }
       />
 
       <OpenAIClient />
