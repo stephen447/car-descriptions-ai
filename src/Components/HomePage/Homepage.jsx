@@ -132,7 +132,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1 className="text-4xl">Home Page</h1>
       <Dropdown
         options={["Toyota", "BMW", "Audi"]}
         label={"Manufacturer"}
