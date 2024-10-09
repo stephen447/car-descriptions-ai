@@ -19,7 +19,7 @@ test('calls onToggle and changes state when clicked', () => {
   const toggleElement = screen.getByRole('button');
   
   // Click the toggle
-  fireEvent.click(toggleElement);
+  fireEvent.click(toggleElement)
 
   // onToggle should be called with true
   expect(onToggleMock).toHaveBeenCalledWith(true);

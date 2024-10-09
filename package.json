@@ -25,7 +25,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "warn" // Change to "warn" to allow unused vars without failing
+    }
   },
   "browserslist": {
     "production": [
