@@ -107,16 +107,11 @@ const HomePage = () => {
     const featuresArray = Object.keys(features).filter(
       (feature) => features[feature]
     );
-    console.log("Features Array: ", featuresArray);
-
     // Create the prompt, joining the features array into a string
     const prompt = `I am selling a ${year} ${manufacturer} ${model}, the exterior color is ${color} and the interior color is ${interiorColor}. The mileage is ${mileage} kilometers, the condition is ${condition}, it has an ${transmission} transmission and a ${fuelType} ${engineSize} liter engine. Some of the additional features include ${featuresArray.join(
       ", "
     )}. Can you make me a description for car selling website Carzone?`;
-
     setPrompt(prompt);
-    console.log("Prompt: ", prompt);
-    console.log("Features: ", features);
   }, [
     manufacturer,
     model,
@@ -133,7 +128,7 @@ const HomePage = () => {
 
   return (
     <div className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-      <h1 className="text-4xl text-center m-5">Car Descriptions Generator</h1>
+      <h1 className="text-4xl text-center mb-5">Car Descriptions Generator</h1>
       <div className="grid gap-2 sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
         <Dropdown
           options={["Toyota", "BMW", "Audi"]}

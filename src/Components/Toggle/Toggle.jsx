@@ -31,6 +31,7 @@ const Toggle = ({ label, onToggle }) => {
           cursor: "pointer",
         }}
         tabIndex={0}
+        role="button" // Make the div accessible as a button
       >
         <div
           style={{
