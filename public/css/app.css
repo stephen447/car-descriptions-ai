@@ -501,11 +501,11 @@ video {
 .m-12 {
   margin: 3rem;
 }
-.m-5 {
-  margin: 1.25rem;
-}
 .m-auto {
   margin: auto;
+}
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 .ml-1 {
   margin-left: 0.25rem;
@@ -518,6 +518,9 @@ video {
 }
 .grid {
   display: grid;
+}
+.h-screen {
+  height: 100vh;
 }
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
