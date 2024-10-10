@@ -17,7 +17,7 @@ const Toggle = ({ label, onToggle }) => {
   };
 
   return (
-    <div className="flex m-auto">
+    <div className="flex mb-3 m-auto">
       <label style={{ marginRight: "10px" }}>{label}</label>
       <div
         onClick={handleToggle}
