@@ -1,24 +1,16 @@
 import Dropdown from "../Dropdown/DropDown";
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Toggle from "../Toggle/Toggle";
 import Input from "../Input/Input";
 import Output from "../Output/Output";
+import OpenAI from "openai";
 
-// Manufacturers
-// Models - - will need to do some kind of api call to get the models for the selected manufacturer
-// Year
-// Mileage
-// Price
-// Fuel Type
-// Engine Size
-// Transmission
-// Body Style
-// Color
-// Interior Color
-// Features
-// Sun roof, alloy wheels, leather seats, navigations, carplay, android auto, heated seats, cooled seats, heated steering wheel, backup camera, parking sensors, blind spot monitoring, lane keep assist, adaptive cruise control, keyless entry, push button start, remote start, power tailgate, electric seats, memory seats, lumbar support, bluetooth, wifi, usb ports, wireless charging,
+// Open AI Client
+const openai = new OpenAI({
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 const HomePage = () => {
   const [manufacturerOptions, setManufacturerOptions] = useState([]);
@@ -28,18 +20,25 @@ const HomePage = () => {
   const [prompt, setPrompt] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [model, setModel] = useState("");
-  const [year, setYear] = useState(2023);
+  const [year, setYear] = useState(2025);
   const [mileage, setMileage] = useState(0);
   const [condition, setCondition] = useState();
   const [transmission, setTransmission] = useState();
   const [fuelType, setFuelType] = useState();
-  const [engineSize, setEngineSize] = useState();
+  const [engineSize, setEngineSize] = useState(1.0);
   const [bodyStyle, setBodyStyle] = useState();
   const [color, setColor] = useState();
   const [interiorColor, setInteriorColor] = useState();
-  //const [ServiceHistory, setServiceHistory] = useState();
+  const [displayFeatureToggles, setDisplayFeatureToggles] = useState(false);
   const [Tax, setTax] = useState();
   const [NCT, setNCT] = useState();
+  const [PreviousOwners, setPreviousOwners] = useState();
+  const [descriptionsGenerated, setDescriptionsGenerated] = useState(0);
+  const [description, setDescription] = useState();
+
+  const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const fuelOptions = ["Petrol", "Diesel", "Electric", "Hybrid"];
   const transmissionOptions = ["Automatic", "Manual"];
@@ -82,7 +81,29 @@ const HomePage = () => {
     bluetooth: false,
     heatedSeats: false,
     parkingSensors: false,
+    heatedSteeringWheel: false,
+    carplay: false,
+    androidAuto: false,
+    reverseCamera: false,
+    blindSpotMonitoring: false,
+    laneKeepAssist: false,
+    adaptiveCruiseControl: false,
+    keylessEntry: false,
+    metallicPaint: false,
+    electricSeats: false,
+    memorySeats: false,
+    lumbarSupport: false,
+    LEDLights: false,
+    alloyWheels: false,
   });
+
+  // Get the descriptions generated from local storage, if null set to zero
+  useEffect(() => {
+    // Set the descriptions generated in local storage
+    setDescriptionsGenerated(
+      localStorage.getItem("descriptionsGenerated") || 0
+    );
+  }, []);
 
   /**
    * Function to get the json data for the manufacturers
@@ -154,9 +175,33 @@ const HomePage = () => {
     features,
   ]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted");
+    // Increment the number of descriptions generated
+    setDescriptionsGenerated(descriptionsGenerated + 1);
+    // Set the descriptions generated in local storage
+    localStorage.setItem("descriptionsGenerated", descriptionsGenerated + 1);
+    // If the number of descriptions generated are greater than 2, return
+    if (descriptionsGenerated > 2) {
+      console.warn("You have generated too many descriptions");
+      return;
+    }
+    // Send the prompt to open ai api
+    setLoading(true);
+    setError("");
+
+    try {
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini-2024-07-18",
+        messages: [{ role: "user", content: prompt }],
+      });
+      console.log("completion", completion);
+      setDescription(completion.choices[0].message.content);
+    } catch (err) {
+      console.error(err);
+      setError("Error fetching data from OpenAI.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -233,46 +278,145 @@ const HomePage = () => {
             value={engineSize}
             onChange={setEngineSize}
           />
+          <div className="col-span-full text-center">
+            <button
+              onClick={() => setDisplayFeatureToggles(!displayFeatureToggles)}
+              className="bg-slate-400 px-6 py-3 rounded-lg hover:bg-slate-600 active:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-300 mr-4"
+            >
+              {displayFeatureToggles ? "Hide Features" : "Show Features"}
+            </button>
+          </div>
 
-          <Toggle
-            label={"Sunroof"}
-            onToggle={(value) => setFeatures({ ...features, sunroof: value })}
-          />
-          <Toggle
-            label={"Leather Seats"}
-            onToggle={(value) =>
-              setFeatures({ ...features, leatherSeats: value })
-            }
-          />
-          <Toggle
-            label={"Bluetooth"}
-            onToggle={(value) => setFeatures({ ...features, bluetooth: value })}
-          />
-          <Toggle
-            label={"Heated Seats"}
-            onToggle={(value) =>
-              setFeatures({ ...features, heatedSeats: value })
-            }
-          />
-          <Toggle
-            label={"Parking Sensors"}
-            onToggle={(value) =>
-              setFeatures({ ...features, parkingSensors: value })
-            }
-          />
+          {displayFeatureToggles && (
+            <>
+              <Toggle
+                label={"Sunroof"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, sunroof: value })
+                }
+              />
+              <Toggle
+                label={"Leather Seats"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, leatherSeats: value })
+                }
+              />
+              <Toggle
+                label={"Bluetooth"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, bluetooth: value })
+                }
+              />
+              <Toggle
+                label={"Heated Seats"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, heatedSeats: value })
+                }
+              />
+              <Toggle
+                label={"Parking Sensors"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, parkingSensors: value })
+                }
+              />
+              <Toggle
+                label={"Heated Steering Wheel"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, heatedSteeringWheel: value })
+                }
+              />
+              <Toggle
+                label={"Carplay"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, carplay: value })
+                }
+              />
+              <Toggle
+                label={"Android Auto"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, androidAuto: value })
+                }
+              />
+              <Toggle
+                label={"Reverse Camera"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, reverseCamera: value })
+                }
+              />
+              <Toggle
+                label={"Blind Spot Monitoring"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, blindSpotMonitoring: value })
+                }
+              />
+              <Toggle
+                label={"Lane Keep Assist"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, laneKeepAssist: value })
+                }
+              />
+              <Toggle
+                label={"Adaptive Cruise Control"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, adaptiveCruiseControl: value })
+                }
+              />
+              <Toggle
+                label={"Keyless Entry"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, keylessEntry: value })
+                }
+              />
+              <Toggle
+                label={"Metallic Paint"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, metallicPaint: value })
+                }
+              />
+              <Toggle
+                label={"Electric Seats"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, electricSeats: value })
+                }
+              />
+              <Toggle
+                label={"Memory Seats"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, memorySeats: value })
+                }
+              />
+              <Toggle
+                label={"Lumbar Support"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, lumbarSupport: value })
+                }
+              />
+              <Toggle
+                label={"LED Lights"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, LEDLights: value })
+                }
+              />
+              <Toggle
+                label={"Alloy Wheels"}
+                onToggle={(value) =>
+                  setFeatures({ ...features, alloyWheels: value })
+                }
+              />
+            </>
+          )}
 
-          {/* Submit button */}
           <div className="col-span-full text-center">
             <button
               type="submit"
               className="bg-slate-400 px-6 py-3 rounded-lg hover:bg-slate-600 active:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-300 mr-4"
             >
-              Submit
+              Generate Description
             </button>
           </div>
         </form>
       </div>
-      <Output text={prompt} />
+      {description && <Output text={description} />}
     </div>
   );
 };
